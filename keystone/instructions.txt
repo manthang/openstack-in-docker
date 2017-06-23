@@ -1,0 +1,45 @@
+1. Create database
+
+CREATE DATABASE keystone1;
+GRANT ALL PRIVILEGES ON keystone1.* TO 'keystone1'@'localhost' IDENTIFIED BY 'MY_PASSWORD';
+GRANT ALL PRIVILEGES ON keystone1.* TO 'keystone1'@'%' IDENTIFIED BY 'MY_PASSWORD';
+FLUSH PRIVILEGES;
+
+
+2. Build image
+# docker build -t controller:4000/keystone1 ./keystone/
+
+3. Run container
+# docker run -it --name keystone --network=host controller:4000/keystone1
+
+4. Setup Keystone in the running container
+
+# su -s /bin/sh -c "keystone-manage db_sync" keystone
+
+# keystone-manage fernet_setup --keystone-user keystone --keystone-group keystone
+# keystone-manage credential_setup --keystone-user keystone --keystone-group keystone
+
+# keystone-manage bootstrap --bootstrap-password MDFiODY0NjQ3NzYxN2Qw \
+  --bootstrap-admin-url http://docker-3:35357/v3/ \
+  --bootstrap-internal-url http://docker-3:5000/v3/ \
+  --bootstrap-public-url http://docker-3:5000/v3/ \
+  --bootstrap-region-id RegionOne
+ 
+# service apache2 restart
+
+5. Testing
+
+# cat > admin-openrc << EOF
+export OS_PROJECT_DOMAIN_NAME=default
+export OS_USER_DOMAIN_NAME=default
+export OS_PROJECT_NAME=admin
+export OS_USERNAME=admin
+export OS_PASSWORD=MY_PASSWORD
+export OS_AUTH_URL=http://docker-3:35357/v3
+export OS_IDENTITY_API_VERSION=3
+export OS_IMAGE_API_VERSION=2
+EOF
+
+# source admin-openrc
+
+# openstack endpoint list
