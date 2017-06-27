@@ -30,7 +30,7 @@ RUN git clone https://github.com/openstack/nova.git \
 	&& sed -i 's\Babel>=2.3.4\Babel!=2.4.0,>=2.3.4\g' requirements.txt \
         && pip --no-cache-dir install --upgrade .
 
-VOLUME ["/var/log/nova","/var/lib/nova"]
+VOLUME ["/var/log/nova", "/var/lib/nova"]
 
 COPY nova.conf /etc/nova/nova.conf
 COPY nova_sudoers /etc/sudoers.d/nova
