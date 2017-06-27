@@ -23,8 +23,8 @@ RUN apt-get update \
         && apt-get install -y git python-pip python-pymysql python-memcache libssl-dev libffi-dev
 
 RUN git clone https://github.com/openstack/glance.git \
-	      && cd glance \
-	      && git checkout tags/14.0.0 -b stable/ocata \
+	&& cd glance \
+	&& git checkout tags/14.0.0 -b stable/ocata \
         && cp -R etc/* /etc/glance \     
         && pip install -U .
 
