@@ -24,10 +24,10 @@ RUN apt-get update \
           iptables sudo novnc
 
 RUN git clone https://github.com/openstack/nova.git \
-	      && cd nova \
-	      && git checkout tags/15.0.6 -b stable/ocata \
+	&& cd nova \
+	&& git checkout tags/15.0.6 -b stable/ocata \
         && cp -R etc/nova/* /etc/nova \
-	      && sed -i 's\Babel>=2.3.4\Babel!=2.4.0,>=2.3.4\g' requirements.txt \
+	&& sed -i 's\Babel>=2.3.4\Babel!=2.4.0,>=2.3.4\g' requirements.txt \
         && pip --no-cache-dir install --upgrade .
 
 VOLUME ["/var/log/nova","/var/lib/nova"]
