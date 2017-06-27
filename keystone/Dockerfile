@@ -40,4 +40,4 @@ COPY keystone-paste.ini /etc/keystone/keystone-paste.ini
 
 EXPOSE 5000 35357
 
-CMD /usr/sbin/apache2ctl -D FOREGROUND
+CMD ["/usr/sbin/apache2ctl","-D","FOREGROUND"]
