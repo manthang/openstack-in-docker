@@ -26,7 +26,7 @@ RUN git clone https://github.com/openstack/glance.git \
 	&& cd glance \
 	&& git checkout tags/14.0.0 -b stable/ocata \
         && cp -R etc/* /etc/glance \     
-        && pip install -U .
+        && pip --no-cache-dir install --upgrade .
 
 VOLUME ["/var/log/glance"]
 
