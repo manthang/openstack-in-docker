@@ -1,0 +1,10 @@
+1. Build image
+
+# docker build -t controller:4000/nova-api ./nova/nova-api/
+
+2. Run container
+
+# docker run -d --name nova-api --network=host --privileged --user nova controller:4000/nova-api
+
+
+
