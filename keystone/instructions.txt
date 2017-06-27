@@ -1,16 +1,14 @@
 1. Create database
-
-CREATE DATABASE keystone1;
-GRANT ALL PRIVILEGES ON keystone1.* TO 'keystone1'@'localhost' IDENTIFIED BY 'MY_PASSWORD';
-GRANT ALL PRIVILEGES ON keystone1.* TO 'keystone1'@'%' IDENTIFIED BY 'MY_PASSWORD';
+CREATE DATABASE keystone;
+GRANT ALL PRIVILEGES ON keystone.* TO 'keystone'@'localhost' IDENTIFIED BY 'MY_PASSWORD';
+GRANT ALL PRIVILEGES ON keystone.* TO 'keystone'@'%' IDENTIFIED BY 'MY_PASSWORD';
 FLUSH PRIVILEGES;
 
-
 2. Build image
-# docker build -t controller:4000/keystone1 ./keystone/
+# docker build -t controller:4000/keystone ./keystone/
 
 3. Run container
-# docker run -it --name keystone --network=host controller:4000/keystone1
+# docker run -it --name keystone --network=host controller:4000/keystone
 
 4. Setup Keystone in the running container
 
@@ -24,8 +22,7 @@ FLUSH PRIVILEGES;
   --bootstrap-internal-url http://docker-3:5000/v3/ \
   --bootstrap-public-url http://docker-3:5000/v3/ \
   --bootstrap-region-id RegionOne
- 
-# service apache2 restart
+  
 
 5. Testing
 
