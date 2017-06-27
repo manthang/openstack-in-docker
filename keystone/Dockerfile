@@ -1,8 +1,8 @@
 FROM ubuntu:16.04
 MAINTAINER thangmv@vcs-team
 
-ENV SERVICE="keystone"
 ENV HOSTNAME="docker-3"
+ENV SERVICE="keystone"
 
 #Create $service user
 RUN useradd --home-dir "/var/lib/$SERVICE" \
@@ -21,29 +21,23 @@ RUN mkdir -p /var/log/$SERVICE \
 ENV DEBIAN_FRONTEND noninteractive
 
 RUN apt-get update \
-        && apt-get install -y software-properties-common \
-        && add-apt-repository -y cloud-archive:ocata \
-        && apt-get update \
-        && apt-get install -y git python-dev python-pip python-pymysql python-openstackclient \
-        apache2 libapache2-mod-wsgi libssl-dev libffi-dev
+        && apt-get install -y git python-pip python-pymysql apache2 libapache2-mod-wsgi libssl-dev libffi-dev
 
-RUN git clone https://github.com/openstack/keystone.git -b stable/ocata \
+RUN git clone https://github.com/openstack/keystone.git \
         && cd keystone \
+        && git checkout tags/11.0.2 -b stable/ocata \
         && cp -r etc/* /etc/keystone \
         && cp httpd/wsgi-keystone.conf /etc/apache2/sites-available \
         && ln -s /etc/apache2/sites-available/wsgi-keystone.conf /etc/apache2/sites-enabled/ \
         && echo ServerName $HOSTNAME >> /etc/apache2/apache2.conf \
-        && pip install --upgrade .
+        && sed -i 's\Babel>=2.3.4\Babel!=2.4.0,>=2.3.4\g' requirements.txt \
+        && pip --no-cache-dir install --upgrade .
 
-VOLUME ["/var/log/apache2","/var/log/keystone","/etc/keystone/"]
+VOLUME ["/var/log/apache2","/var/log/keystone","/etc/keystone/credential-keys","/etc/keystone/fernet-keys"]
 
 COPY keystone.conf /etc/keystone/keystone.conf
-
-COPY entrypoint.sh /entrypoint.sh
-RUN chmod +x /entrypoint.sh
+COPY keystone-paste.ini /etc/keystone/keystone-paste.ini
 
 EXPOSE 5000 35357
 
-ENTRYPOINT ["/entrypoint.sh"]
-
-CMD [""]
+CMD /usr/sbin/apache2ctl -D FOREGROUND
