@@ -27,7 +27,7 @@ RUN apt-get update \
 RUN git clone https://github.com/openstack/neutron.git \
 	&& cd neutron \
 	&& git checkout tags/10.0.2 -b stable/ocata \
-        && cp etc/{*.*} /etc/neutron \
+        && cp etc/*.* /etc/neutron \
         && cp -R etc/neutron/rootwrap.d/* /etc/neutron/rootwrap.d \
         && pip --no-cache-dir install --upgrade .
 
