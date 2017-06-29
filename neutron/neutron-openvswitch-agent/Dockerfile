@@ -21,7 +21,7 @@ ENV DEBIAN_FRONTEND noninteractive
 
 RUN apt-get update \
         && apt-get install -y git python-pip python-pymysql python-memcache libssl-dev libffi-dev \
-		      sudo iptables ipset python-openvswitch openvswitch-switch
+		sudo iptables ipset python-openvswitch openvswitch-switch
 
 RUN git clone https://github.com/openstack/neutron.git \
         && cd neutron \
