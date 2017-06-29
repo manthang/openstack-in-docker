@@ -25,9 +25,9 @@ RUN apt-get update \
 
 RUN git clone https://github.com/openstack/neutron.git \
         && cd neutron \
-	      && git checkout tags/10.0.2 -b stable/ocata \
-	      && cp -r etc/neutron/rootwrap.d/ /etc/neutron \
-	      && cp etc/rootwrap.conf /etc/neutron \
+	&& git checkout tags/10.0.2 -b stable/ocata \
+	&& cp -r etc/neutron/rootwrap.d/ /etc/neutron \
+	&& cp etc/rootwrap.conf /etc/neutron \
         && pip --no-cache-dir install --upgrade .
 
 VOLUME ["/var/log/neutron","/var/lib/neutron","/var/run/openvswitch"]
