@@ -44,7 +44,7 @@ RUN cd /horizon \
   	&& ln -s /etc/apache2/conf-available/openstack-dashboard.conf /etc/apache2/conf-enabled/ \
   	&& chown -R horizon: /etc/openstack-dashboard
 
-VOLUME ["/var/log/apache2"]
+VOLUME ["/var/log/apache2", "/var/lib/openstack-dashboard"]
 
 EXPOSE 80 443
 
