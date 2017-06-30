@@ -36,13 +36,13 @@ RUN cd /horizon \
 	&& cp manage.py /usr/local/lib/python2.7/dist-packages/openstack_dashboard \ 
 	&& cp manage.py /usr/local/lib/python2.7/dist-packages/horizon \
 	&& (cd /usr/local/lib/python2.7/dist-packages/openstack_dashboard && ./manage.py compilemessages) \ 	
-  && (cd /usr/local/lib/python2.7/dist-packages/horizon && ./manage.py compilemessages) \
-#  && ./manage.py collectstatic --noinput \
-#  && ./manage.py compress \
-  && cp -r openstack_dashboard/conf/* /etc/openstack-dashboard/ \
-  && echo ServerName $HOSTNAME >> /etc/apache2/apache2.conf \
-  && ln -s /etc/apache2/conf-available/openstack-dashboard.conf /etc/apache2/conf-enabled/ \
-  && chown -R horizon: /etc/openstack-dashboard
+	&& (cd /usr/local/lib/python2.7/dist-packages/horizon && ./manage.py compilemessages) \
+#  	 && ./manage.py collectstatic --noinput \
+#  	 && ./manage.py compress \
+  	&& cp -r openstack_dashboard/conf/* /etc/openstack-dashboard/ \
+  	&& echo ServerName $HOSTNAME >> /etc/apache2/apache2.conf \
+  	&& ln -s /etc/apache2/conf-available/openstack-dashboard.conf /etc/apache2/conf-enabled/ \
+  	&& chown -R horizon: /etc/openstack-dashboard
 
 VOLUME ["/var/log/apache2"]
 
