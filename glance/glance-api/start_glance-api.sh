@@ -12,6 +12,8 @@ sed -i "s/CONTROLLER_HOST/$CONTROLLER_HOST/g" /etc/glance/glance-api.conf
 sed -i "s/GLANCE_PASS/$GLANCE_PASS/g" /etc/glance/glance-api.conf
 
 sed -i "s|TRANSPORT_URL|$TRANSPORT_URL|g" /etc/glance/glance-api.conf
+
 sed -i "s/MEMCACHED_SERVERS/$MEMCACHED_SERVERS/g" /etc/glance/glance-api.conf
+sed -i "s/MEMCACHE_SECRET_KEY/$MEMCACHE_SECRET_KEY/g" /etc/glance/glance-api.conf
 
 glance-api

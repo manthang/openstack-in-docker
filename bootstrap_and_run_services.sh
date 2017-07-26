@@ -5,7 +5,7 @@
 #
 
 printf "\nBootstrap keystone..."
-docker run -d --name keystone --network=host -u root -v /var/log/apache2:/var/log/apache2 -v /etc/keystone/credential-keys:/etc/keystone/credential-keys -v /etc/keystone/fernet-keys:/etc/keystone/fernet-keys -v /etc/localtime:/etc/localtime --env-file="./keystone/start.env" os-controller:4000/keystone bootstrap.sh
+docker run -d --name keystone --network=host -u root -v /var/log/apache2:/var/log/apache2 -v /etc/keystone/credential-keys:/etc/keystone/credential-keys -v /etc/keystone/fernet-keys:/etc/keystone/fernet-keys -v /etc/localtime:/etc/localtime --env-file="./run_vars/general.env" --env-file="./run_vars/keystone.env" os-controller:4000/keystone bootstrap.sh
 
 printf "\nWait until bootstrap process done and then start keystone container..."
 RETVAL=1
@@ -20,7 +20,7 @@ if [ RETVAL==0 ]
   then
 	docker ps -a | grep Exit | grep keystone | cut -d ' ' -f 1 | xargs docker rm -f -v
 
-	docker run -d --name keystone --network=host -u root -v /var/log/apache2:/var/log/apache2 -v /etc/keystone/credential-keys:/etc/keystone/credential-keys -v /etc/keystone/fernet-keys:/etc/keystone/fernet-keys -v /etc/localtime:/etc/localtime --env-file="./keystone/start.env" os-controller:4000/keystone
+	docker run -d --name keystone --network=host -u root -v /var/log/apache2:/var/log/apache2 -v /etc/keystone/credential-keys:/etc/keystone/credential-keys -v /etc/keystone/fernet-keys:/etc/keystone/fernet-keys -v /etc/localtime:/etc/localtime --env-file="./run_vars/general.env" --env-file="./run_vars/keystone.env" os-controller:4000/keystone
 
 fi
 
@@ -29,7 +29,7 @@ fi
 #
 
 printf "Initializing projects, services, users, roles, endpoints..."
-docker run -d --name openstack-client --network=host -u root --env-file="./openstack-client/start.env" os-controller:4000/openstack-client init_services.sh
+docker run -d --name openstack-client --network=host -u root --env-file="./run_vars/general.env" --env-file="./run_vars/openstackclient.env" os-controller:4000/openstack-client init_services.sh
 
 RETVAL=1
 
@@ -44,7 +44,7 @@ done
 #
 
 printf "\nBootstrap glance..."
-docker run -d --name glance-api --network=host -v /var/log/glance:/var/log/glance -v /var/lib/glance:/var/lib/glance -v /etc/localtime:/etc/localtime -u glance --env-file="./glance/glance-api/start.env" os-controller:4000/glance-api bootstrap.sh
+docker run -d --name glance-api --network=host -v /var/log/glance:/var/log/glance -v /var/lib/glance:/var/lib/glance -v /etc/localtime:/etc/localtime -u glance --env-file="./run_vars/general.env" --env-file="./run_vars/glance.env" os-controller:4000/glance-api bootstrap.sh
 
 printf "\nWait until bootstrap process done and then start glance containers..."
 RETVAL=1
@@ -59,9 +59,9 @@ if [ RETVAL==0 ]
   then
 	docker ps -a | grep Exit | grep glance-api | cut -d ' ' -f 1 | xargs docker rm -f -v
 
-	docker run -d --name glance-api --network=host -v /var/log/glance:/var/log/glance -v /var/lib/glance:/var/lib/glance -v /etc/localtime:/etc/localtime -u glance --env-file="./glance/glance-api/start.env" os-controller:4000/glance-api
+	docker run -d --name glance-api --network=host -v /var/log/glance:/var/log/glance -v /var/lib/glance:/var/lib/glance -v /etc/localtime:/etc/localtime -u glance --env-file="./run_vars/general.env" --env-file="./run_vars/glance.env" os-controller:4000/glance-api
 
-	docker run -d --name glance-registry --network=host -v /var/log/glance:/var/log/glance -v /var/lib/glance:/var/lib/glance -v /etc/localtime:/etc/localtime -u glance --env-file="./glance/glance-registry/start.env" os-controller:4000/glance-registry
+	docker run -d --name glance-registry --network=host -v /var/log/glance:/var/log/glance -v /var/lib/glance:/var/lib/glance -v /etc/localtime:/etc/localtime -u glance --env-file="./run_vars/general.env" --env-file="./run_vars/glance.env" os-controller:4000/glance-registry
 
 fi
 
@@ -70,7 +70,7 @@ fi
 #
 
 printf "\nBootstrap nova..."
-docker run -d --name nova-api --network=host --privileged -u nova -v /var/log/nova:/var/log/nova -v /var/lib/nova:/var/lib/nova -v /etc/localtime:/etc/localtime --env-file="./nova/nova-api/start.env" os-controller:4000/nova-api bootstrap.sh
+docker run -d --name nova-api --network=host --privileged -u nova -v /var/log/nova:/var/log/nova -v /var/lib/nova:/var/lib/nova -v /etc/localtime:/etc/localtime --env-file="./run_vars/general.env" --env-file="./run_vars/nova.env" os-controller:4000/nova-api bootstrap.sh
 
 printf "\nWait until bootstrap process done and then start nova containers..."
 RETVAL=1
@@ -85,17 +85,17 @@ if [ RETVAL==0 ]
   then
 	docker ps -a | grep Exit | grep nova-api | cut -d ' ' -f 1 | xargs docker rm -f -v
 
-	docker run -d --name nova-api --network=host --privileged -u nova -v /var/log/nova:/var/log/nova -v /var/lib/nova:/var/lib/nova -v /etc/localtime:/etc/localtime --env-file="./nova/nova-api/start.env" os-controller:4000/nova-api
+	docker run -d --name nova-api --network=host --privileged -u nova -v /var/log/nova:/var/log/nova -v /var/lib/nova:/var/lib/nova -v /etc/localtime:/etc/localtime --env-file="./run_vars/general.env" --env-file="./run_vars/nova.env" os-controller:4000/nova-api
 
-	docker run -d --name nova-conductor --network=host --privileged -u nova -v /var/log/nova:/var/log/nova -v /var/lib/nova:/var/lib/nova -v /etc/localtime:/etc/localtime --env-file="./nova/nova-conductor/start.env" os-controller:4000/nova-conductor
+	docker run -d --name nova-conductor --network=host --privileged -u nova -v /var/log/nova:/var/log/nova -v /var/lib/nova:/var/lib/nova -v /etc/localtime:/etc/localtime --env-file="./run_vars/general.env" --env-file="./run_vars/nova.env" os-controller:4000/nova-conductor
 
-	docker run -d --name nova-consoleauth --network=host --privileged -u nova -v /var/log/nova:/var/log/nova -v /var/lib/nova:/var/lib/nova -v /etc/localtime:/etc/localtime --env-file="./nova/nova-consoleauth/start.env" os-controller:4000/nova-consoleauth
+	docker run -d --name nova-consoleauth --network=host --privileged -u nova -v /var/log/nova:/var/log/nova -v /var/lib/nova:/var/lib/nova -v /etc/localtime:/etc/localtime --env-file="./run_vars/general.env" --env-file="./run_vars/nova.env" os-controller:4000/nova-consoleauth
 
-	docker run -d --name nova-novncproxy --network=host --privileged -u nova -v /var/log/nova:/var/log/nova -v /var/lib/nova:/var/lib/nova -v /etc/localtime:/etc/localtime --env-file="./nova/nova-novncproxy/start.env" os-controller:4000/nova-novncproxy
+	docker run -d --name nova-novncproxy --network=host --privileged -u nova -v /var/log/nova:/var/log/nova -v /var/lib/nova:/var/lib/nova -v /etc/localtime:/etc/localtime --env-file="./run_vars/general.env" --env-file="./run_vars/nova.env" os-controller:4000/nova-novncproxy
 
-	docker run -d --name nova-scheduler --network=host --privileged -u nova -v /var/log/nova:/var/log/nova -v /var/lib/nova:/var/lib/nova -v /etc/localtime:/etc/localtime --env-file="./nova/nova-scheduler/start.env" os-controller:4000/nova-scheduler
+	docker run -d --name nova-scheduler --network=host --privileged -u nova -v /var/log/nova:/var/log/nova -v /var/lib/nova:/var/lib/nova -v /etc/localtime:/etc/localtime --env-file="./run_vars/general.env" --env-file="./run_vars/nova.env" os-controller:4000/nova-scheduler
 
-	docker run -d --name nova-placement-api --network=host --privileged -u root -v /var/log/nova:/var/log/nova -v /var/lib/nova:/var/lib/nova -v /etc/localtime:/etc/localtime --env-file="./nova/nova-placement-api/start.env" os-controller:4000/nova-placement-api
+	docker run -d --name nova-placement-api --network=host --privileged -u root -v /var/log/nova:/var/log/nova -v /var/lib/nova:/var/lib/nova -v /etc/localtime:/etc/localtime --env-file="./run_vars/general.env" --env-file="./run_vars/nova.env" os-controller:4000/nova-placement-api
 
 fi
 
@@ -104,7 +104,7 @@ fi
 #
 
 printf "\nBootstrap neutron..."
-docker run -d --name neutron-server --network=host --privileged --user neutron -v /var/log/neutron:/var/log/neutron -v /var/lib/neutron:/var/lib/neutron -v /etc/localtime:/etc/localtime --env-file="./neutron/neutron-server/start.env" os-controller:4000/neutron-server bootstrap.sh
+docker run -d --name neutron-server --network=host --privileged --user neutron -v /var/log/neutron:/var/log/neutron -v /var/lib/neutron:/var/lib/neutron -v /etc/localtime:/etc/localtime --env-file="./run_vars/general.env" --env-file="./run_vars/neutron.env" os-controller:4000/neutron-server bootstrap.sh
 
 printf "\nWait until bootstrap process done and then start neutron containers..."
 RETVAL=1
@@ -119,13 +119,13 @@ if [ RETVAL==0 ]
   then
   	docker ps -a | grep Exit | grep neutron-server | cut -d ' ' -f 1 | xargs docker rm -f -v
 
-	docker run -d --name neutron-server --network=host --privileged --user neutron -v /var/log/neutron:/var/log/neutron -v /var/lib/neutron:/var/lib/neutron -v /etc/localtime:/etc/localtime --env-file="./neutron/neutron-server/start.env" os-controller:4000/neutron-server
+	docker run -d --name neutron-server --network=host --privileged --user neutron -v /var/log/neutron:/var/log/neutron -v /var/lib/neutron:/var/lib/neutron -v /etc/localtime:/etc/localtime --env-file="./run_vars/general.env" --env-file="./run_vars/neutron.env" os-controller:4000/neutron-server
 
-	docker run -d --name neutron-ovs-agent --network=host --privileged --user neutron -v /var/log/neutron:/var/log/neutron -v /var/lib/neutron:/var/lib/neutron -v /run:/run:shared -v /run/netns:/run/netns:shared -v /run/openvswitch:/run/openvswitch -v /etc/localtime:/etc/localtime --env-file="./neutron/neutron-ovs-agent/start.env" os-controller:4000/neutron-ovs-agent
+	docker run -d --name neutron-ovs-agent --network=host --privileged --user neutron -v /var/log/neutron:/var/log/neutron -v /var/lib/neutron:/var/lib/neutron -v /run:/run:shared -v /run/netns:/run/netns:shared -v /run/openvswitch:/run/openvswitch -v /etc/localtime:/etc/localtime --env-file="./run_vars/general.env" --env-file="./run_vars/neutron.env" os-controller:4000/neutron-ovs-agent
 
-	docker run -d --name neutron-dhcp-agent --network=host --privileged --user neutron -v /var/log/neutron:/var/log/neutron -v /var/lib/neutron:/var/lib/neutron -v /run:/run:shared -v /run/netns:/run/netns:shared -v /run/openvswitch:/run/openvswitch -v /etc/localtime:/etc/localtime --env-file="./neutron/neutron-dhcp-agent/start.env" os-controller:4000/neutron-dhcp-agent
+	docker run -d --name neutron-dhcp-agent --network=host --privileged --user neutron -v /var/log/neutron:/var/log/neutron -v /var/lib/neutron:/var/lib/neutron -v /run:/run:shared -v /run/netns:/run/netns:shared -v /run/openvswitch:/run/openvswitch -v /etc/localtime:/etc/localtime --env-file="./run_vars/general.env" --env-file="./run_vars/neutron.env" os-controller:4000/neutron-dhcp-agent
 
-	docker run -d --name neutron-metadata-agent --network=host --privileged --user neutron -v /var/log/neutron:/var/log/neutron -v /var/lib/neutron:/var/lib/neutron -v /run/netns:/run/netns:shared -v /etc/localtime:/etc/localtime --env-file="./neutron/neutron-metadata-agent/start.env" os-controller:4000/neutron-metadata-agent
+	docker run -d --name neutron-metadata-agent --network=host --privileged --user neutron -v /var/log/neutron:/var/log/neutron -v /var/lib/neutron:/var/lib/neutron -v /run/netns:/run/netns:shared -v /etc/localtime:/etc/localtime --env-file="./run_vars/general.env" --env-file="./run_vars/neutron.env" os-controller:4000/neutron-metadata-agent
 
 fi
 
@@ -134,7 +134,7 @@ fi
 #
 
 printf "\nBootstrap cinder..."
-docker run -d --name cinder-api --network=host -u cinder -v /var/log/apache2:/var/log/apache2 -v /etc/localtime:/etc/localtime --env-file="./cinder/cinder-api/start.env" os-controller:4000/cinder-api bootstrap.sh
+docker run -d --name cinder-api --network=host -u cinder -v /var/log/apache2:/var/log/apache2 -v /etc/localtime:/etc/localtime --env-file="./run_vars/general.env" --env-file="./run_vars/cinder.env" os-controller:4000/cinder-api bootstrap.sh
 
 printf "\nWait until bootstrap process done and then start cinder containers..."
 RETVAL=1
@@ -149,11 +149,11 @@ if [ RETVAL==0 ]
   then
   	docker ps -a | grep Exit | grep cinder-api | cut -d ' ' -f 1 | xargs docker rm -f -v
 
-	docker run -d --name cinder-api --network=host -u root -v /var/log/apache2:/var/log/apache2 -v /etc/localtime:/etc/localtime --env-file="./cinder/cinder-api/start.env" os-controller:4000/cinder-api
+	docker run -d --name cinder-api --network=host -u root -v /var/log/apache2:/var/log/apache2 -v /etc/localtime:/etc/localtime --env-file="./run_vars/general.env" --env-file="./run_vars/cinder.env" os-controller:4000/cinder-api
 
-	docker run -d --name cinder-scheduler --network=host -u cinder -v /var/log/cinder:/var/log/cinder -v /etc/localtime:/etc/localtime --env-file="./cinder/cinder-scheduler/start.env" os-controller:4000/cinder-scheduler
+	docker run -d --name cinder-scheduler --network=host -u cinder -v /var/log/cinder:/var/log/cinder -v /etc/localtime:/etc/localtime --env-file="./run_vars/general.env" --env-file="./run_vars/cinder.env" os-controller:4000/cinder-scheduler
 
-	docker run -d --name cinder-volume --network=host -u cinder -v /var/log/cinder:/var/log/cinder -v /etc/localtime:/etc/localtime --env-file="./cinder/cinder-volume/start.env" os-controller:4000/cinder-volume
+	docker run -d --name cinder-volume --network=host -u cinder -v /var/log/cinder:/var/log/cinder -v /etc/localtime:/etc/localtime --env-file="./run_vars/general.env" --env-file="./run_vars/cinder.env" os-controller:4000/cinder-volume
 
 fi
 
@@ -162,7 +162,7 @@ fi
 #
 
 printf "\nStart horizon container...."
-docker run -d --name horizon --network=host -u root -v /var/log/apache2:/var/log/apache2 -v /etc/localtime:/etc/localtime --env-file="./horizon/start.env" os-controller:4000/horizon
+docker run -d --name horizon --network=host -u root -v /var/log/apache2:/var/log/apache2 -v /etc/localtime:/etc/localtime --env-file="./run_vars/general.env" --env-file="./run_vars/horizon.env" os-controller:4000/horizon
 
 printf "\nFinishing to run containers for OpenStack services!!!"
 

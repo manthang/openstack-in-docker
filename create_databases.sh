@@ -3,11 +3,11 @@
 MYSQL_USER=root
 MYSQL_PASS=MDFiODY0NjQ3NzYxN2Qw
 
-KEYSTONE_PASS=ZWNhMGUw
-GLANCE_PASS=ZWNhMGUw
-NOVA_PASS=ZWNhMGUw
-NEUTRON_PASS=ZWNhMGUw
-CINDER_PASS=ZWNhMGUw
+KEYSTONE_PASS=
+GLANCE_PASS=
+NOVA_PASS=
+NEUTRON_PASS=
+CINDER_PASS=
 
 config_keystone="CREATE DATABASE IF NOT EXISTS keystone; GRANT ALL PRIVILEGES ON keystone.* TO 'keystone'@'localhost' IDENTIFIED BY '$KEYSTONE_PASS'; GRANT ALL PRIVILEGES ON keystone.* TO 'keystone'@'%' IDENTIFIED BY '$KEYSTONE_PASS';"
 
@@ -30,4 +30,3 @@ mysql -u "$MYSQL_USER" -p"$MYSQL_PASS" -e "$config_nova"
 mysql -u "$MYSQL_USER" -p"$MYSQL_PASS" -e "$config_nova_cell0"
 mysql -u "$MYSQL_USER" -p"$MYSQL_PASS" -e "$config_neutron"
 mysql -u "$MYSQL_USER" -p"$MYSQL_PASS" -e "$config_cinder"
-
