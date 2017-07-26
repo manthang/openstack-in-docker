@@ -1,25 +1,19 @@
-#!/bin/bash
+1. Build images
 
-source /thangmv-rc
+- On Controller01, run these commands to build and then push the images to Docker private registry.
 
-NOW=$(date +"%Y-%m-%d-%H%M")
+./build_images.sh
 
-openstack volume list -c ID -c "Display Name" -f csv > /var/log/cron/volume-list.$NOW 2>&1
+./push_images.sh
 
-while read line
-do
-	VOLUME_ID=$(echo $line | cut -d ',' -f 1)
-	VOLUME_NAME=$(echo $line | cut -d ',' -f 2)
+2. Run containers
 
-	openstack snapshot create --force --name $NOW_$VOLUME_NAME $VOLUME_ID
-	sleep 8
+- On Controller01, run this command to initialize the essential data and configurations of OpenStack environment.
 
-	STATUS=$?
-	if [ STATUS == 0]; then
-		echo "Created snapshot for volume $VOLUME_NAME successfully." >> /var/log/cron/snapshot-report.$NOW 2>&1
-	else
-		echo "Failed to create snapshot of volume $VOLUME_NAME." >> /var/log/cron/snapshot-report.$NOW 2>&1
-	fi
+./bootstrap_and_run_services.sh
 
-done < /var/log/cron/volume-list.$NOW
+- On the other Controller nodes, run these commands to pull latest images on the registry and then run containers of OpenStack services from them.
 
+./pull_images.sh
+
+./run_services.sh
