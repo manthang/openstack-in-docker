@@ -62,7 +62,7 @@ docker run -d --name cinder-volume --network=host -u cinder -v /var/log/cinder:/
 #
 printf "\nStart horizon container...."
 
-docker run -d --name horizon --network=host -u root -v /var/log/apache2:/var/log/apache2 -v /etc/localtime:/etc/localtime --env-file="./run_vars/general.env" --env-file="./run_vars/horizon.env" os-controller:4000/horizon
+docker run -d --name horizon --network=host -u root -v /var/log/apache2:/var/log/apache2 -v /etc/localtime:/etc/localtime --env-file="./run_vars/general.env" os-controller:4000/horizon
 
 printf "\nFinishing to run containers for OpenStack services!!!"
 

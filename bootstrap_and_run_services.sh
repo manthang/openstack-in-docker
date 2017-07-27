@@ -29,7 +29,7 @@ fi
 #
 
 printf "Initializing projects, services, users, roles, endpoints..."
-docker run -d --name openstack-client --network=host -u root --env-file="./run_vars/general.env" --env-file="./run_vars/openstackclient.env" os-controller:4000/openstack-client init_services.sh
+docker run -d --name openstack-client --network=host -u root --env-file="./run_vars/general.env" --env-file="./run_vars/glance.env" --env-file="./run_vars/nova.env" --env-file="./run_vars/neutron.env" --env-file="./run_vars/cinder.env" os-controller:4000/openstack-client init_services.sh
 
 RETVAL=1
 
@@ -162,7 +162,7 @@ fi
 #
 
 printf "\nStart horizon container...."
-docker run -d --name horizon --network=host -u root -v /var/log/apache2:/var/log/apache2 -v /etc/localtime:/etc/localtime --env-file="./run_vars/general.env" --env-file="./run_vars/horizon.env" os-controller:4000/horizon
+docker run -d --name horizon --network=host -u root -v /var/log/apache2:/var/log/apache2 -v /etc/localtime:/etc/localtime --env-file="./run_vars/general.env"  os-controller:4000/horizon
 
 printf "\nFinishing to run containers for OpenStack services!!!"
 
