@@ -1,26 +1,26 @@
 #!/bin/bash
 
-MYSQL_PASS=$(date +%s | sha256sum | base64 | head -c 32)
+MYSQL_PASS=$(head /dev/urandom | tr -dc A-Za-z0-9 | head -c 32)
 
-KEYSTONE_DBPASS=$(date +%s | sha256sum | base64 | head -c 32)
-GLANCE_DBPASS=$(date +%s | sha256sum | base64 | head -c 32)
-NOVA_DBPASS=$(date +%s | sha256sum | base64 | head -c 32)
-NEUTRON_DBPASS=$(date +%s | sha256sum | base64 | head -c 32)
-CINDER_DBPASS=$(date +%s | sha256sum | base64 | head -c 32)
+KEYSTONE_DBPASS=$(head /dev/urandom | tr -dc A-Za-z0-9 | head -c 32)
+GLANCE_DBPASS=$(head /dev/urandom | tr -dc A-Za-z0-9 | head -c 32)
+NOVA_DBPASS=$(head /dev/urandom | tr -dc A-Za-z0-9 | head -c 32)
+NEUTRON_DBPASS=$(head /dev/urandom | tr -dc A-Za-z0-9 | head -c 32)
+CINDER_DBPASS=$(head /dev/urandom | tr -dc A-Za-z0-9 | head -c 32)
 
-ADMIN_PASS=$(date +%s | sha256sum | base64 | head -c 32)
+ADMIN_PASS=$(head /dev/urandom | tr -dc A-Za-z0-9 | head -c 32)
 
-GLANCE_PASS=$(date +%s | sha256sum | base64 | head -c 32)
-NOVA_PASS=$(date +%s | sha256sum | base64 | head -c 32)
-PLACEMENT_PASS=$(date +%s | sha256sum | base64 | head -c 32)
-NEUTRON_PASS=$(date +%s | sha256sum | base64 | head -c 32)
-CINDER_PASS=$(date +%s | sha256sum | base64 | head -c 32)
+GLANCE_PASS=$(head /dev/urandom | tr -dc A-Za-z0-9 | head -c 32)
+NOVA_PASS=$(head /dev/urandom | tr -dc A-Za-z0-9 | head -c 32)
+PLACEMENT_PASS=$(head /dev/urandom | tr -dc A-Za-z0-9 | head -c 32)
+NEUTRON_PASS=$(head /dev/urandom | tr -dc A-Za-z0-9 | head -c 32)
+CINDER_PASS=$(head /dev/urandom | tr -dc A-Za-z0-9 | head -c 32)
 
-METADATA_PROXY_SHARED_SECRET=$(date +%s | sha256sum | base64 | head -c 32)
+METADATA_PROXY_SHARED_SECRET=$(head /dev/urandom | tr -dc A-Za-z0-9 | head -c 32)
 
-RABBIT_PASS=$(date +%s | sha256sum | base64 | head -c 32)
+RABBIT_PASS=$(head /dev/urandom | tr -dc A-Za-z0-9 | head -c 32)
 
-MEMCACHED_PASS=$(date +%s | sha256sum | base64 | head -c 32)
+MEMCACHED_PASS=$(head /dev/urandom | tr -dc A-Za-z0-9 | head -c 32)
 
 sed -i "s/ADMIN_PASS/$ADMIN_PASS/g" ./run_vars/openstackclient.env
 
