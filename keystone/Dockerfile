@@ -22,7 +22,7 @@ RUN mkdir -p /var/log/$SERVICE \
 ENV DEBIAN_FRONTEND noninteractive
 
 RUN apt-get update \
-        && apt-get install -y git python-pip python-pymysql apache2 libapache2-mod-wsgi libssl-dev libffi-dev \
+        && apt-get install -y git python-pip python-pymysql python-memcache apache2 libapache2-mod-wsgi libssl-dev libffi-dev \
 	&& apt-get clean
 
 RUN git clone https://github.com/openstack/keystone.git \
