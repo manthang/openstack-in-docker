@@ -95,7 +95,7 @@ if [ RETVAL==0 ]
 
 	docker run -d --name nova-scheduler --network=host --privileged -u nova -v /var/log/nova:/var/log/nova -v /var/lib/nova:/var/lib/nova -v /etc/localtime:/etc/localtime --env-file="./run_vars/general.env" --env-file="./run_vars/nova.env" os-controller:4000/nova-scheduler
 
-	docker run -d --name nova-placement-api --network=host --privileged -u root -v /var/log/nova:/var/log/nova -v /var/lib/nova:/var/lib/nova -v /etc/localtime:/etc/localtime --env-file="./run_vars/general.env" --env-file="./run_vars/nova.env" os-controller:4000/nova-placement-api
+	docker run -d --name nova-placement-api --network=host --privileged -u root -v /var/log/apache2:/var/log/apache2 -v /var/lib/nova:/var/lib/nova -v /etc/localtime:/etc/localtime --env-file="./run_vars/general.env" --env-file="./run_vars/nova.env" os-controller:4000/nova-placement-api
 
 fi
 
