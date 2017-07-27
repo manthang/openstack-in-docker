@@ -19,7 +19,7 @@ openstack endpoint create --region $REGION_NAME compute public http://$CONTROLLE
 openstack endpoint create --region $REGION_NAME compute internal http://$CONTROLLER_HOST:8774/v2.1
 openstack endpoint create --region $REGION_NAME compute admin http://$CONTROLLER_HOST:8774/v2.1
 
-openstack user create --domain default --password $NOVA_PLACEMENT_PASS placement
+openstack user create --domain default --password $PLACEMENT_PASS placement
 openstack role add --project service --user placement admin
 openstack service create --name placement --description "Placement API" placement
 openstack endpoint create --region $REGION_NAME placement public http://$CONTROLLER_HOST:8778
