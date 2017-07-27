@@ -17,6 +17,9 @@ sed -i "s/NEUTRON_PASS/$NEUTRON_PASS/g" /etc/nova/nova.conf
 sed -i "s/METADATA_PROXY_SHARED_SECRET/$METADATA_PROXY_SHARED_SECRET/g" /etc/nova/nova.conf
 
 sed -i "s|TRANSPORT_URL|$TRANSPORT_URL|g" /etc/nova/nova.conf
+
 sed -i "s/MEMCACHED_SERVERS/$MEMCACHED_SERVERS/g" /etc/nova/nova.conf
+sed -i "s/MEMCACHE_SECRET_KEY/$MEMCACHE_SECRET_KEY/g" /etc/nova/nova.conf
+
 
 nova-scheduler

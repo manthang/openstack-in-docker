@@ -16,7 +16,9 @@ sed -i "s/CONTROLLER_HOST/$CONTROLLER_HOST/g" /etc/cinder/cinder.conf
 sed -i "s/CINDER_PASS/$CINDER_PASS/g" /etc/cinder/cinder.conf
 
 sed -i "s|TRANSPORT_URL|$TRANSPORT_URL|g" /etc/cinder/cinder.conf
+
 sed -i "s/MEMCACHED_SERVERS/$MEMCACHED_SERVERS/g" /etc/cinder/cinder.conf
+sed -i "s/MEMCACHE_SECRET_KEY/$MEMCACHE_SECRET_KEY/g" /etc/cinder/cinder.conf
 
 sed -i "s/localhost/$HOSTNAME/g" /etc/apache2/apache2.conf
 
