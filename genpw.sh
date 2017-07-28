@@ -53,8 +53,3 @@ sed -i "s/glance_dbpass/$GLANCE_DBPASS/g" ./create_databases.sh
 sed -i "s/nova_dbpass/$NOVA_DBPASS/g" ./create_databases.sh
 sed -i "s/neutron_dbpass/$NEUTRON_DBPASS/g" ./create_databases.sh
 sed -i "s/cinder_dbpass/$CINDER_DBPASS/g" ./create_databases.sh
-
-
-
-
-
