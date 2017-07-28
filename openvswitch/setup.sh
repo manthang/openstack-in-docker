@@ -1,7 +1,7 @@
 #!/bin/bash
 
 PROVIDER_BRI=br-provider
-PROVIDER_INT=ens6
+PROVIDER_INT=$1
 
 printf "\nInstall openvswitch package...."
 apt update \
